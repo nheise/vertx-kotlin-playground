@@ -121,6 +121,11 @@
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>
         <version>${maven-surefire-plugin.version}</version>
+        <configuration>
+          <environmentVariables>
+            <ENV_VAR_1>TestVar1</ENV_VAR_1>
+          </environmentVariables>
+        </configuration>
       </plugin>
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
