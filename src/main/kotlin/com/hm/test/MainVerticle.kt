@@ -1,16 +1,18 @@
 package com.hm.test
 
 import com.hm.test.hello.helloRouter
-import io.vertx.core.AbstractVerticle
+import com.hm.test.search.searchRouter
 import io.vertx.core.Promise
 import io.vertx.ext.web.Router
+import io.vertx.kotlin.coroutines.CoroutineVerticle
 
-class MainVerticle : AbstractVerticle() {
+class MainVerticle : CoroutineVerticle() {
 
   override fun start(startPromise: Promise<Void>) {
     val router = Router.router(vertx)
 
     router.mountSubRouter("/", helloRouter(vertx))
+    router.mountSubRouter("/", searchRouter(vertx))
 
     vertx
       .createHttpServer()
