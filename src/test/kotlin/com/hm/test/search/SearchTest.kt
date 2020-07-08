@@ -23,7 +23,7 @@ class SearchTest {
   @DisplayName("When everything is all right, return status 200")
   fun checkSearchQuery(vertx: Vertx, testContext: VertxTestContext) {
     val webClient = WebClient.create(vertx)
-    webClient.get(8080, "localhost", "/search?query=foo")
+    webClient.get(8888, "localhost", "/search?query=foo")
       .`as`(BodyCodec.string())
       .send(testContext.succeeding { resp ->
         testContext.verify {
