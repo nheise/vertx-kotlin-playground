@@ -22,7 +22,7 @@ class VerticleWithSharedService : CoroutineVerticle() {
           startPromise.complete()
           println("HTTP server started on port 8888")
         } else {
-          startPromise.fail(http.cause());
+          startPromise.fail(http.cause())
         }
       }
   }
