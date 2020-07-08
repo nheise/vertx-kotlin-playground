@@ -30,8 +30,7 @@ class VerticleWithSharedService : CoroutineVerticle() {
 }
 
 val giveMeSomethingHandler = Handler<RoutingContext> {
-  val service = sharedService(it.vertx())
   it.response()
     .putHeader("content-type", "text/plain")
-    .end(service.giveMeSomething())
+    .end(sharedService(it.vertx()).giveMeSomething())
 }

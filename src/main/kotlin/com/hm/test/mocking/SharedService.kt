@@ -14,9 +14,7 @@ fun sharedService(vertx: Vertx, service: SharedService = SharedService()): Share
   return holders.getOrPut(DEFAULT_SERVICE_NAME) { SharedServiceHolder(service) }.service
 }
 
-class SharedServiceHolder(service: SharedService) : Shareable {
-  val service = service
-}
+class SharedServiceHolder(val service: SharedService) : Shareable
 
 class SharedService {
   fun giveMeSomething() = "something"
