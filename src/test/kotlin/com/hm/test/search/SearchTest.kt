@@ -6,6 +6,7 @@ import io.vertx.ext.web.client.WebClient
 import io.vertx.ext.web.codec.BodyCodec
 import io.vertx.junit5.VertxExtension
 import io.vertx.junit5.VertxTestContext
+import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -27,8 +28,8 @@ class SearchTest {
       .`as`(BodyCodec.string())
       .send(testContext.succeeding { resp ->
         testContext.verify {
-          assert(resp.statusCode() == 200)
-          assert(resp.body() == "bar")
+          assertEquals(200, resp.statusCode())
+          assertEquals("""{"foo":"bar"}""", resp.body())
           testContext.completeNow()
         }
       })
