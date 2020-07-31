@@ -1,25 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <appender name="stash" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
-            <level>info</level>
-        </filter>
-        <file>file.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>file.log.%d{yyyy-MM-dd}</fileNamePattern>
-            <!-- each file should be at most 10KB, keep 20 days worth of history, but at most 1MB -->
-            <maxFileSize>10KB</maxFileSize>
-            <maxHistory>20</maxHistory>
-            <totalSizeCap>1MB</totalSizeCap>
-        </rollingPolicy>
-        <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <fieldNames>
-                <timestamp>timestamp</timestamp>
-                <version>version</version>
-            </fieldNames>
-        </encoder>
-    </appender>
-    <root level="INFO">
-        <appender-ref ref="stash" />
-    </root>
+  <appender name="stash" class="ch.qos.logback.core.ConsoleAppender">
+    <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+      <fieldNames>
+        <timestamp>timestamp</timestamp>
+        <version>version</version>
+      </fieldNames>
+    </encoder>
+  </appender>
+  <root level="INFO">
+    <appender-ref ref="stash"/>
+  </root>
 </configuration>
