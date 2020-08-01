@@ -27,7 +27,7 @@ class LogMeVerticle : CoroutineVerticle() {
         it.next()
       }
       .coroutineHandler {
-        AppLog.info("log in blocking handler")
+        AppLog.info("log in coroutine handler")
         it.next()
       }
       .handler {
