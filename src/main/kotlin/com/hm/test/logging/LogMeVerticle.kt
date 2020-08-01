@@ -1,9 +1,14 @@
 package com.hm.test.logging
 
+import io.vertx.ext.web.Route
 import io.vertx.ext.web.Router
 import io.vertx.ext.web.RoutingContext
 import io.vertx.kotlin.core.http.listenAwait
 import io.vertx.kotlin.coroutines.CoroutineVerticle
+import io.vertx.kotlin.coroutines.dispatcher
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.slf4j.MDCContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.slf4j.MDC
@@ -18,7 +23,14 @@ class LogMeVerticle : CoroutineVerticle() {
     router.get("/logme")
       .handler(::addRequestIdIntoLogContext)
       .handler {
-        AppLog.info("Got request")
+        AppLog.info("log in normal handler")
+        it.next()
+      }
+      .coroutineHandler {
+        AppLog.info("log in blocking handler")
+        it.next()
+      }
+      .handler {
         it.response().end()
       }
       .failureHandler {
@@ -48,3 +60,16 @@ fun clearLogContext(ctx: RoutingContext) {
 
 val RoutingContext.requestId: String
   get() = request().getHeader("X_REQUEST_ID") ?: "no_request_id_present"
+
+fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit): Route {
+  handler { ctx ->
+    CoroutineScope(ctx.vertx().dispatcher().plus(MDCContext())).launch {
+      try {
+        fn(ctx)
+      } catch (e: Exception) {
+        ctx.fail(e)
+      }
+    }
+  }
+  return this
+}

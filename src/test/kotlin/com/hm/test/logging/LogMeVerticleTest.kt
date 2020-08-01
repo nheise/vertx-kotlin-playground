@@ -31,7 +31,7 @@ internal class LogMeVerticleTest {
     runBlocking {
       val webClient = WebClient.create(vertx)
 
-      repeatConcurrent(10) {
+      repeatConcurrent(1) {
         var resp = webClient.get(8080, "localhost", "/logme")
           .`as`(BodyCodec.string())
           .putHeader("X_REQUEST_ID", "$it")
