@@ -62,7 +62,7 @@ val RoutingContext.requestId: String
   get() = request().getHeader("X_REQUEST_ID") ?: "no_request_id_present"
 
 fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit): Route {
-  handler { ctx ->
+  return handler { ctx ->
     CoroutineScope(ctx.vertx().dispatcher().plus(MDCContext())).launch {
       try {
         fn(ctx)
@@ -71,5 +71,4 @@ fun Route.coroutineHandler(fn: suspend (RoutingContext) -> Unit): Route {
       }
     }
   }
-  return this
 }
