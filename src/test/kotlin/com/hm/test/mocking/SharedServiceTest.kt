@@ -9,24 +9,24 @@ import org.junit.jupiter.api.Test
 
 internal class SharedServiceTest {
 
-  @MockK
-  private lateinit var mockService: SharedService
+    @MockK
+    private lateinit var mockService: SharedService
 
-  @BeforeEach
-  fun setUp() {
-    MockKAnnotations.init(this, relaxUnitFun = true)
-  }
+    @BeforeEach
+    fun setUp() {
+        MockKAnnotations.init(this, relaxUnitFun = true)
+    }
 
-  @Test
-  fun simpleCall() {
-    val service = sharedService()
-    assertEquals("something", service.giveMeSomething())
-  }
+    @Test
+    fun simpleCall() {
+        val service = sharedService()
+        assertEquals("something", service.giveMeSomething())
+    }
 
-  @Test
-  fun mockedCall() {
-    val service = sharedService(mockService)
-    every { service.giveMeSomething() } returns "some mock thing"
-    assertEquals("some mock thing", service.giveMeSomething())
-  }
+    @Test
+    fun mockedCall() {
+        val service = sharedService(mockService)
+        every { service.giveMeSomething() } returns "some mock thing"
+        assertEquals("some mock thing", service.giveMeSomething())
+    }
 }

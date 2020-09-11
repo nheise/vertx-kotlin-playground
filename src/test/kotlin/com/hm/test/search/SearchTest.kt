@@ -15,37 +15,37 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(VertxExtension::class)
 class SearchTest {
 
-  @BeforeEach
-  fun deployVerticle(vertx: Vertx, testContext: VertxTestContext) {
-    vertx.deployVerticle(MainVerticle(), testContext.succeeding<String> { _ -> testContext.completeNow() })
-  }
+    @BeforeEach
+    fun deployVerticle(vertx: Vertx, testContext: VertxTestContext) {
+        vertx.deployVerticle(MainVerticle(), testContext.succeeding<String> { _ -> testContext.completeNow() })
+    }
 
-  @Test
-  @DisplayName("When everything is all right, return status 200")
-  fun checkSearchQuery(vertx: Vertx, testContext: VertxTestContext) {
-    val webClient = WebClient.create(vertx)
-    webClient.get(8888, "localhost", "/search?query=foo")
-      .`as`(BodyCodec.string())
-      .send(testContext.succeeding { resp ->
-        testContext.verify {
-          assertEquals(200, resp.statusCode())
-          assertEquals("""{"foo":"bar"}""", resp.body())
-          testContext.completeNow()
-        }
-      })
-  }
+    @Test
+    @DisplayName("When everything is all right, return status 200")
+    fun checkSearchQuery(vertx: Vertx, testContext: VertxTestContext) {
+        val webClient = WebClient.create(vertx)
+        webClient.get(8888, "localhost", "/search?query=foo")
+            .`as`(BodyCodec.string())
+            .send(testContext.succeeding { resp ->
+                testContext.verify {
+                    assertEquals(200, resp.statusCode())
+                    assertEquals("""{"foo":"bar"}""", resp.body())
+                    testContext.completeNow()
+                }
+            })
+    }
 
-  @Test
-  @DisplayName("When query not fit, return status 400")
-  fun checkFalseSearchQuery(vertx: Vertx, testContext: VertxTestContext) {
-    val webClient = WebClient.create(vertx)
-    webClient.get(8888, "localhost", "/search?query=fooo")
-      .`as`(BodyCodec.string())
-      .send(testContext.succeeding { resp ->
-        testContext.verify {
-          assert(resp.statusCode() == 400)
-          testContext.completeNow()
-        }
-      })
-  }
+    @Test
+    @DisplayName("When query not fit, return status 400")
+    fun checkFalseSearchQuery(vertx: Vertx, testContext: VertxTestContext) {
+        val webClient = WebClient.create(vertx)
+        webClient.get(8888, "localhost", "/search?query=fooo")
+            .`as`(BodyCodec.string())
+            .send(testContext.succeeding { resp ->
+                testContext.verify {
+                    assert(resp.statusCode() == 400)
+                    testContext.completeNow()
+                }
+            })
+    }
 }

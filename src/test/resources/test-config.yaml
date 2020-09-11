@@ -1,4 +1,4 @@
 level1:
-  props:
-    key1: value1
-    key2: value2
+    props:
+        key1: value1
+        key2: value2

@@ -16,44 +16,44 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(VertxExtension::class)
 internal class VerticleWithSharedServiceTest {
 
-  @MockK
-  private var mockService = mockk<SharedService>()
+    @MockK
+    private var mockService = mockk<SharedService>()
 
-  @BeforeEach
-  fun setUp(vertx: Vertx, testContext: VertxTestContext) {
+    @BeforeEach
+    fun setUp(vertx: Vertx, testContext: VertxTestContext) {
 
-    vertx.deployVerticle(VerticleWithSharedService(), testContext.succeeding<String> { _ -> testContext.completeNow() })
-  }
+        vertx.deployVerticle(VerticleWithSharedService(), testContext.succeeding<String> { _ -> testContext.completeNow() })
+    }
 
-  @Test
-  fun checkShareServiceOutput(vertx: Vertx, testContext: VertxTestContext) {
-    val webClient = WebClient.create(vertx)
-    webClient.get(8888, "localhost", "/")
-      .`as`(BodyCodec.string())
-      .send(testContext.succeeding { resp ->
-        testContext.verify {
-          assertEquals(200, resp.statusCode())
-          assertEquals("something", resp.body())
-          testContext.completeNow()
-        }
-      })
-  }
+    @Test
+    fun checkShareServiceOutput(vertx: Vertx, testContext: VertxTestContext) {
+        val webClient = WebClient.create(vertx)
+        webClient.get(8888, "localhost", "/")
+            .`as`(BodyCodec.string())
+            .send(testContext.succeeding { resp ->
+                testContext.verify {
+                    assertEquals(200, resp.statusCode())
+                    assertEquals("something", resp.body())
+                    testContext.completeNow()
+                }
+            })
+    }
 
-  @Test
-  fun checkMockedShareServiceOutput(vertx: Vertx, testContext: VertxTestContext) {
+    @Test
+    fun checkMockedShareServiceOutput(vertx: Vertx, testContext: VertxTestContext) {
 
-    sharedService(vertx, mockService)
-    every { mockService.giveMeSomething() } returns "some mock thing"
+        sharedService(vertx, mockService)
+        every { mockService.giveMeSomething() } returns "some mock thing"
 
-    val webClient = WebClient.create(vertx)
-    webClient.get(8888, "localhost", "/")
-      .`as`(BodyCodec.string())
-      .send(testContext.succeeding { resp ->
-        testContext.verify {
-          assertEquals(200, resp.statusCode())
-          assertEquals("some mock thing", resp.body())
-          testContext.completeNow()
-        }
-      })
-  }
+        val webClient = WebClient.create(vertx)
+        webClient.get(8888, "localhost", "/")
+            .`as`(BodyCodec.string())
+            .send(testContext.succeeding { resp ->
+                testContext.verify {
+                    assertEquals(200, resp.statusCode())
+                    assertEquals("some mock thing", resp.body())
+                    testContext.completeNow()
+                }
+            })
+    }
 }

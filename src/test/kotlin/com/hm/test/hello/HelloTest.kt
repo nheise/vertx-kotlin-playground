@@ -13,23 +13,23 @@ import org.junit.jupiter.api.extension.ExtendWith
 @ExtendWith(VertxExtension::class)
 class HelloTest {
 
-  @BeforeEach
-  fun deploy_verticle(vertx: Vertx, testContext: VertxTestContext) {
-    vertx.deployVerticle(MainVerticle(), testContext.succeeding<String> { _ -> testContext.completeNow() })
-  }
+    @BeforeEach
+    fun deploy_verticle(vertx: Vertx, testContext: VertxTestContext) {
+        vertx.deployVerticle(MainVerticle(), testContext.succeeding<String> { _ -> testContext.completeNow() })
+    }
 
-  @Test
-  fun verticle_deployed(vertx: Vertx, testContext: VertxTestContext) {
-    val webClient = WebClient.create(vertx)
-    webClient.get(8888, "localhost", "/hello")
-      .`as`(BodyCodec.string())
-      .send(testContext.succeeding { resp ->
-        testContext.verify {
-          assert(resp.statusCode() == 200)
-          assert(resp.body() == "Hello from Vert.x!")
-          testContext.completeNow()
-        }
-      })
-  }
+    @Test
+    fun verticle_deployed(vertx: Vertx, testContext: VertxTestContext) {
+        val webClient = WebClient.create(vertx)
+        webClient.get(8888, "localhost", "/hello")
+            .`as`(BodyCodec.string())
+            .send(testContext.succeeding { resp ->
+                testContext.verify {
+                    assert(resp.statusCode() == 200)
+                    assert(resp.body() == "Hello from Vert.x!")
+                    testContext.completeNow()
+                }
+            })
+    }
 
 }

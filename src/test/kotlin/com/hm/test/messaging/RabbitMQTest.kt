@@ -4,8 +4,8 @@ import org.junit.jupiter.api.Test
 
 internal class RabbitMQTest {
 
-  @Test
-  fun messagingTest() {
+    @Test
+    fun messagingTest() {
 
-  }
+    }
 }

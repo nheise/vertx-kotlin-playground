@@ -8,29 +8,29 @@ import io.vertx.kotlin.coroutines.CoroutineVerticle
 
 class VerticleWithSharedService : CoroutineVerticle() {
 
-  override fun start(startPromise: Promise<Void>) {
+    override fun start(startPromise: Promise<Void>) {
 
-    val router = Router.router(vertx)
+        val router = Router.router(vertx)
 
-    router.get("/").handler(giveMeSomethingHandler)
+        router.get("/").handler(giveMeSomethingHandler)
 
-    vertx
-      .createHttpServer()
-      .requestHandler(router)
-      .listen(8888) { http ->
-        if (http.succeeded()) {
-          startPromise.complete()
-          println("HTTP server started on port 8888")
-        } else {
-          startPromise.fail(http.cause())
-        }
-      }
-  }
+        vertx
+            .createHttpServer()
+            .requestHandler(router)
+            .listen(8888) { http ->
+                if (http.succeeded()) {
+                    startPromise.complete()
+                    println("HTTP server started on port 8888")
+                } else {
+                    startPromise.fail(http.cause())
+                }
+            }
+    }
 
 }
 
 val giveMeSomethingHandler = Handler<RoutingContext> {
-  it.response()
-    .putHeader("content-type", "text/plain")
-    .end(sharedService(it.vertx()).giveMeSomething())
+    it.response()
+        .putHeader("content-type", "text/plain")
+        .end(sharedService(it.vertx()).giveMeSomething())
 }
